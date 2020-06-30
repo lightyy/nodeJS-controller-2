@@ -5,16 +5,37 @@ export const home = (req, res) =>
 
 export const movieDetail = (req, res) => {
   const {
-    params: { id }
+    params: { id },
   } = req;
   const movie = getMovieById(id);
   if (!movie) {
     res.render("404", { pageTitle: "Movie not found" });
   }
-  return res.render("detail", { movie });
+  return res.render("detail", { movie, pageTitle: movie.title });
 };
 
 /*
 Write the controller or controllers you need to render the form
 and to handle the submission
 */
+
+export const getAdd = (req, res) => {
+  return res.render("add", { pageTitle: "Add Movie!" });
+};
+
+export const postAdd = (req, res) => {
+  const {
+    body: { title, synopsis, genres },
+  } = req;
+
+  const splitGenres = genres.split(",");
+
+  const movie = {
+    title,
+    synopsis,
+    genres: splitGenres,
+  };
+  addMovie(movie);
+
+  res.redirect("/");
+};

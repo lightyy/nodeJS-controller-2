@@ -4,15 +4,15 @@ import axios from "axios";
 let movies = [];
 const YIFY_URL = "https://yts.mx/api/v2/";
 const client = axios.create({
-  baseURL: YIFY_URL
+  baseURL: YIFY_URL,
 });
 const startDB = async () => {
   try {
     console.log("⏳  Starting Movie DB");
     ({
       data: {
-        data: { movies }
-      }
+        data: { movies },
+      },
     } = await client.get("/list_movies.json", { params: { limit: 50 } }));
     console.log("✅  Movie DB Ready!");
   } catch (e) {
@@ -26,11 +26,11 @@ startDB();
 export const getMovies = () => movies;
 
 // This gives you one movie, don't forget to pass the ID
-export const getMovieById = id => {
+export const getMovieById = (id) => {
   if (!id) {
     throw Error("❌  YOU FORGOT TO PASS THE MOVIE ID TO THE FUNCTION  ❌ ");
   }
-  return movies.find(m => m.id === parseInt(id, 10));
+  return movies.find((m) => m.id === parseInt(id, 10));
 };
 
 /*
@@ -42,6 +42,7 @@ Only ONE required argument, it should be an object containing
 */
 
 export const addMovie = ({ title, synopsis, genres }) => {
+  console.log(title, synopsis, genres);
   if (typeof title !== "string" || typeof synopsis !== "string") {
     throw Error("❌  title and synopsis should be strings  ❌");
   }
